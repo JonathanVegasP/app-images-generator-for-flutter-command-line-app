@@ -1,4 +1,4 @@
-# A command-line application to generate a AppImages class for Flutter projects
+# A command-line application to generate an AppImages class for Flutter projects
 
 ### How to use
 - Create a folder called image with the files at your root flutter project
