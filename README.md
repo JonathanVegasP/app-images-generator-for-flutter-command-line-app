@@ -1,5 +1,8 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# A command-line application to generate a AppImages class for Flutter projects
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+### How to use
+- Create a folder called image with the files at your root flutter project
+- Create an exe using the command: dart2native bin/images.dart
+- Copy the images.exe to your root flutter project
+- On command line type images
+- Enjoy it!

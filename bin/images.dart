@@ -44,7 +44,8 @@ bool isFlutter(String path) {
   final value = file.readAsStringSync();
   if (!value.contains('flutter:')) return false;
   final data = value.split('flutter:');
-  if (value.contains('- images/')) return result;
+  if (RegExp(r'  assets:\n    - images\/', multiLine: true).hasMatch(value))
+    return result;
   final lastLine = data.removeLast();
   final template = '\n\n  assets:\n    - images/$lastLine';
   data.insert(data.length, template);
