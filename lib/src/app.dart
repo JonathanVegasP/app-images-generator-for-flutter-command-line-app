@@ -70,8 +70,12 @@ class App {
     if (!value.contains('flutter:')) {
       _isNotFlutter();
     }
-    if (RegExp(r'  assets:\n    - ' + imagesDir + r'\/', multiLine: true)
-        .hasMatch(value)) {
+    if (RegExp(r'  assets:', multiLine: true).hasMatch(value)) {
+      if (RegExp(r'    - ' '$imagesDir' r'\/', multiLine: true)
+          .hasMatch(value)) {
+        return;
+      }
+      _addImageAssetToFlutter(value, file);
       return;
     }
     _addAssetToFlutter(value, file);
@@ -83,11 +87,21 @@ class App {
     exit(ExitCode.error.index);
   }
 
+  void _addImageAssetToFlutter(String value, File file) {
+    stdout.writeln('Adding asset to Flutter project... ${Emojis.alarmClock}');
+    final data = value.split('flutter:');
+    final lastLine = data.removeLast();
+    final template = lastLine.replaceFirst(
+        RegExp(r'  assets:'), '  assets:\n    - $imagesDir/');
+    data.insert(data.length, template);
+    file.writeAsStringSync(data.join('flutter:'));
+  }
+
   void _addAssetToFlutter(String value, File file) {
     stdout.writeln('Adding asset to Flutter project... ${Emojis.alarmClock}');
     final data = value.split('flutter:');
     final lastLine = data.removeLast();
-    final template = '\n\n  assets:\n    - $imagesDir/$lastLine';
+    final template = '\n\n  assets:\n    - $imagesDir/\n$lastLine';
     data.insert(data.length, template);
     file.writeAsStringSync(data.join('flutter:'));
   }
