@@ -108,9 +108,14 @@ class App {
 
   void _runImages(String uri) {
     final files = _getFiles(uri);
-    final filesName =
-        files.map((e) => path.basenameWithoutExtension(e)).toList();
-    _createImagesClass(uri, files, filesName);
+    var hasSvg = false;
+    final filesName = files.map((e) {
+      if (!hasSvg && e.contains('.svg')) {
+        hasSvg = true;
+      }
+      return path.basenameWithoutExtension(e);
+    }).toList();
+    _createImagesClass(uri, files, filesName, hasSvg);
   }
 
   List<String> _getFiles(String uri) {
@@ -127,7 +132,7 @@ class App {
   }
 
   void _createImagesClass(
-      String uri, List<String> files, List<String> filesName) {
+      String uri, List<String> files, List<String> filesName, bool hasSvg) {
     final dirPath = path.join(uri, imagesTo);
     final directory = Directory(dirPath);
     if (!directory.existsSync()) {
@@ -136,13 +141,11 @@ class App {
     }
     final filePath = path.join(dirPath, 'images.dart');
     stdout.writeln('Creating file at: $filePath... ${Emojis.alarmClock}');
-    File(filePath).writeAsStringSync(
-      Templates.createImagesTemplate(
-        _createVariables(files, filesName),
-        filesName,
-      ),
-      mode: FileMode.write,
-    );
+    final variables = _createVariables(files, filesName);
+    final template = hasSvg
+        ? Templates.createImageWithSvgTemplate(variables, filesName)
+        : Templates.createImagesTemplate(variables, filesName);
+    File(filePath).writeAsStringSync(template, mode: FileMode.write);
     stdout.writeln('File created at: $filePath ${Emojis.thumbsUp}');
     stdout.writeln('Enjoy it ${Emojis.victoryHand}');
     stdout.writeln(
