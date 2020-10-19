@@ -35,7 +35,7 @@ $variables
     for (final image in images) {
       if (image.contains('.svg')) {
         if (kIsWeb) {
-          precacheImage(NetworkImage(image), context);
+          precacheImage(NetworkImage('assets/\$image'), context);
         } else {
           precachePicture(
             ExactAssetPicture(SvgPicture.svgStringDecoder, image),
