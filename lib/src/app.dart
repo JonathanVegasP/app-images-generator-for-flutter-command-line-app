@@ -145,7 +145,7 @@ class App {
     final template = hasSvg
         ? Templates.createImageWithSvgTemplate(variables, filesName)
         : Templates.createImagesTemplate(variables, filesName);
-    File(filePath).writeAsStringSync(template, mode: FileMode.write);
+    File(filePath).writeAsStringSync(template, mode: FileMode.writeOnly);
     stdout.writeln('File created at: $filePath ${Emojis.thumbsUp}');
     stdout.writeln('Enjoy it ${Emojis.victoryHand}');
     stdout.writeln(
